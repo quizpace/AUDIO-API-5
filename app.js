@@ -1,8 +1,9 @@
 // const express = require("express");
 // const multer = require("multer");
+// const path = require("path");
 
 // const app = express();
-// const port = 2000; // Set your desired port
+// const port = process.env.PORT || 2000; // Use the environment port if available
 
 // // Multer configuration for file upload
 // const storage = multer.diskStorage({
@@ -37,10 +38,12 @@
 //   res.send("Welcome to the audio recording API");
 // });
 
+// // Serve uploaded files
+// app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
 // app.listen(port, () => {
 //   console.log(`Server is running on port ${port}`);
 // });
-// ``
 
 const express = require("express");
 const multer = require("multer");
@@ -57,6 +60,17 @@ const storage = multer.diskStorage({
   filename: function (req, file, cb) {
     cb(null, file.originalname);
   },
+});
+
+// Enable CORS - Allow all origins
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  );
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  next();
 });
 
 const upload = multer({ storage: storage });
