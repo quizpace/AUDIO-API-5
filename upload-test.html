@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Photo Upload</title>
+  </head>
+  <body>
+    <h2>Upload a Photo</h2>
+    <form id="uploadForm" enctype="multipart/form-data">
+      <input type="file" name="photo" accept="image/*" required />
+      <button type="submit">Upload Photo</button>
+    </form>
+
+    <script>
+      const form = document.getElementById("uploadForm");
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(form);
+
+        try {
+          const response = await fetch("/stop-recording-upload", {
+            method: "POST",
+            body: formData,
+          });
+
+          if (response.ok) {
+            console.log("Photo uploaded successfully!");
+          } else {
+            console.error("Failed to upload photo");
+          }
+        } catch (error) {
+          console.error("Error uploading photo:", error);
+        }
+      });
+    </script>
+  </body>
+</html>
